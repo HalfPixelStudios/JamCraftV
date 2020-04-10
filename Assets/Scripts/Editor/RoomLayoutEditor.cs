@@ -8,9 +8,9 @@ public class RoomLayoutEditor : Editor {
 
     public override void OnInspectorGUI() {
         RoomLayout rl = (RoomLayout)target;
-
+           
         if (DrawDefaultInspector()) {
-            rl.GenerateRoom();
+            //rl.GenerateRoom();
         }
 
 
