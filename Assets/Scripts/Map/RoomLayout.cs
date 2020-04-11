@@ -50,14 +50,13 @@ public class RoomLayout : MonoBehaviour {
                         if (newval == "#") {
 
                             if (d == Vector2.right) { //right wall
-                                AddWallChain(new Vector2(x + 1, y), new Vector2(x + 1, y + 1));
-                            } else if (d == Vector2.up) { //bottom wall
-                                AddWallChain(new Vector2(x, y), new Vector2(x + 1, y));
-
+                                AddWallChain(new Vector2(x+1,y+1), new Vector2(x+1,y));
+                            } else if (d == Vector2.down) { //bottom wall
+                                AddWallChain(new Vector2(x+1,y), new Vector2(x,y));
                             } else if (d == Vector2.left) { //left wall
-                                AddWallChain(new Vector2(x,y+1),new Vector2(x,y));
-                            } else if (d == Vector2.down) { //upper wall
-                                AddWallChain(new Vector2(x + 1, y + 1), new Vector2(x, y + 1));
+                                AddWallChain(new Vector2(x,y),new Vector2(x,y+1));
+                            } else if (d == Vector2.up) { //upper wall
+                                AddWallChain(new Vector2(x,y+1), new Vector2(x+1,y+1));
                             } 
                         }
                     }
