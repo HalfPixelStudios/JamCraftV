@@ -6,52 +6,49 @@ public class PlayerMovement : MonoBehaviour
     private float moveSpeed = 2f;
 
     [SerializeField]
-    private float jumpForce = 5f;
+    private float jumpForce = 2.5f;
 
-    private Rigidbody2D rb;
+    private Rigidbody rb;
 
     private float x;
     private float z;
 
     private Vector3 move;
-    private BoxCollider2D boxCollider;
+    private BoxCollider boxCollider;
     private bool isGrounded;
     private void Start()
     {
-        rb = gameObject.GetComponent<Rigidbody2D>();
-        boxCollider = gameObject.GetComponent<BoxCollider2D>();
+        rb = gameObject.GetComponent<Rigidbody>();
+        boxCollider = gameObject.GetComponent<BoxCollider>();
     }
     private void Update()
     {
+        
         x = Input.GetAxisRaw("Horizontal");
         z = Input.GetAxisRaw("Vertical");
 
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            Jump();
+        }
+
         move = transform.right * x + transform.forward * z;
     }
+
     private void FixedUpdate()
     {
         rb.transform.Translate(move * moveSpeed * Time.fixedDeltaTime);
     }
     private void Jump()
-    {
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
-        }
+    {       
+        rb.AddForce(new Vector2(0f, jumpForce), ForceMode.Impulse);
+        isGrounded = false;
     }
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("H");
         if(collision.collider.tag == "Ground")
         {
             isGrounded = true;
-        }
-    }
-    private void OnCollisionExit(Collision collision)
-    {
-        if(collision.collider.tag == "Ground")
-        {
-            isGrounded = false;
         }
     }
 }
