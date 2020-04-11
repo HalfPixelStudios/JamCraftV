@@ -27,12 +27,12 @@ public class RoomLayout : MonoBehaviour {
     }
 
     public void FindWallVerticies() {
-        Vector2[] directs = new Vector2[]{Vector2.right,Vector2.down,Vector2.left,Vector2.up};
+        Vector2[] directs = new Vector2[]{Vector2.right,Vector2.up,Vector2.left,Vector2.down};
         
         for (int y = 0; y < this.grid.GetLength(1); y++) {
             for (int x = 0; x < this.grid.GetLength(0); x++) {
 
-                string val = this.grid[x,y];
+                string val = this.grid[y,x];
                 Debug.Log(val);
                 //find walls
                 if (val == ".") { //if there is an empty space
@@ -44,19 +44,20 @@ public class RoomLayout : MonoBehaviour {
                             continue;
                         }
 
-                        string newval = this.grid[nx, ny];
+                        string newval = this.grid[ny, nx];
                         //TODO: make this nicer to the eyes
                         //add wall verticies, the order of the verticies forces a clockwise traversal
                         if (newval == "#") {
 
                             if (d == Vector2.right) { //right wall
                                 AddWallChain(new Vector2(x + 1, y), new Vector2(x + 1, y + 1));
-                            } else if (d == Vector2.down) { //bottom wall
-                                AddWallChain(new Vector2(x + 1, y + 1), new Vector2(x, y + 1));
+                            } else if (d == Vector2.up) { //bottom wall
+                                AddWallChain(new Vector2(x, y), new Vector2(x + 1, y));
+
                             } else if (d == Vector2.left) { //left wall
                                 AddWallChain(new Vector2(x,y+1),new Vector2(x,y));
-                            } else if (d == Vector2.up) { //upper wall
-                                AddWallChain(new Vector2(x,y),new Vector2(x+1,y));
+                            } else if (d == Vector2.down) { //upper wall
+                                AddWallChain(new Vector2(x + 1, y + 1), new Vector2(x, y + 1));
                             } 
                         }
                     }
@@ -118,12 +119,17 @@ public class RoomLayout : MonoBehaviour {
         if (grid == null) { return; }
         for (int y = 0; y < grid.GetLength(1)+1; y++) {
             for (int x = 0; x < grid.GetLength(0)+1; x++) {
+                Gizmos.color = new Color((float)x/(grid.GetLength(0)+1), (float)y/(grid.GetLength(1)+1), 0, 1);
                 Gizmos.DrawSphere(new Vector3(x,0,y),0.1f);
             }
         }
 
+        Gizmos.color = Color.white;
         foreach (Vector2 key in wall_chain.Keys) {
-            Gizmos.DrawLine(new Vector3(key.x,0,key.y), new Vector3(wall_chain[key].x,0, wall_chain[key].y));
+            Vector3 start = new Vector3(key.x, 0, key.y);
+            Vector3 end = new Vector3(wall_chain[key].x, 0, wall_chain[key].y);
+            DrawArrow.ForGizmo(start,end-start);
+
             
         }
     }
