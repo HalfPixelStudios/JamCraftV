@@ -15,14 +15,15 @@ public class RoomLayout : MonoBehaviour {
         grid = new string[,] {
             {"#","#","#","#","#"},
             {"#",".",".",".","#"},
-            {"#",".","#",".","#"},
+            {"#",".",".",".","#"},
             {"#",".",".",".","#"},
             {"#","#","#","#","#"}
 
         };
         wall_chain = new Dictionary<Vector2, Vector2>();
 
-        GenerateWalls();
+        WallRenderer wr = GetComponent<WallRenderer>();
+        wr.RenderWalls(GenerateWalls());
     }
 
     private void OnValidate() {
@@ -36,11 +37,12 @@ public class RoomLayout : MonoBehaviour {
 
         while (wall_chain.Count > 0) {
             List<Vector3> verticies = CollectWallChain();
-            meshes.Add(WallMesh.GenerateWallMesh(verticies, 10));
+            meshes.Add(WallMesh.GenerateWallMesh(verticies, 2));
         }
 
         return meshes;
     }
+
     private void FindWallVerticies() {
         Vector2[] directs = new Vector2[]{Vector2.right,Vector2.up,Vector2.left,Vector2.down};
         

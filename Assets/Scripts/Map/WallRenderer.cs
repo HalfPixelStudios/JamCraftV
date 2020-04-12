@@ -8,13 +8,14 @@ public class WallRenderer : MonoBehaviour {
 
     public void RenderWalls(List<Mesh> meshes) {
         foreach (Transform child in wall_container.transform) { //wipe all previous meshes
-            Destroy(child.gameObject);
+            DestroyImmediate(child.gameObject);
         }
 
         foreach (Mesh mesh in meshes) {
             GameObject meshObject = Instantiate(Resources.Load("MeshObject")) as GameObject;
             meshObject.GetComponent<MeshFilter>().sharedMesh = mesh;
-            //meshObject.GetComponent<MeshRenderer>().sharedMaterial.mainTexture = ;
+            //meshObject.GetComponent<MeshRenderer>().sharedMaterial.mainTexture = ;r
+            meshObject.transform.parent = wall_container.transform;
 
         }
 
