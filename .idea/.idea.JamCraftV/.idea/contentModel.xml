@@ -9,14 +9,22 @@
           <e p="Camera" t="Include">
             <e p="CameraController.cs" t="Include" />
           </e>
+          <e p="Crafting.cs" t="Include" />
+          <e p="DrawArrow.cs" t="Include" />
           <e p="Editor" t="Include">
             <e p="MapEditor.cs" t="Include" />
             <e p="RoomLayoutEditor.cs" t="Include" />
           </e>
+          <e p="Equip.cs" t="Include" />
+          <e p="Furnace.cs" t="Include" />
+          <e p="GlobalContainer.cs" t="Include" />
+          <e p="Item.cs" t="Include" />
           <e p="Map" t="Include">
             <e p="RoomLayout.cs" t="Include" />
             <e p="WallMesh.cs" t="Include" />
+            <e p="WallRenderer.cs" t="Include" />
           </e>
+          <e p="Material.cs" t="Include" />
           <e p="Movement" t="Include">
             <e p="PlayerMovement.cs" t="Include" />
           </e>

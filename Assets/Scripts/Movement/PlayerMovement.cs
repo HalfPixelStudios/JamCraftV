@@ -37,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.transform.Translate(move * moveSpeed * Time.fixedDeltaTime);
+        rb.transform.Translate(Time.fixedDeltaTime * moveSpeed * move);
     }
     private void Jump()
     {       
@@ -46,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.tag == "Ground")
+        if(collision.collider.CompareTag("Ground"))
         {
             isGrounded = true;
         }
