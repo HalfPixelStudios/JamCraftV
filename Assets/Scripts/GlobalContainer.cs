@@ -8,6 +8,7 @@ public class GlobalContainer : MonoBehaviour
     public GameObject player;
     public static GlobalContainer Global;
     public GameObject inventory;
+    public float itemAffinity=5;
 
     private void Awake()
     {
