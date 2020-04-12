@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class GlobalContainer : MonoBehaviour
 {
+
+    public List<int> ground_layers;
     public GameObject player;
     public static GlobalContainer Global;
     public GameObject inventory;
