@@ -7,33 +7,48 @@ public class RoomLayout : MonoBehaviour {
 
 
     //assume grid size to be one unit
-    public int ROOMSIZE = 4;
+    public int ROOMSIZE = 5;
     string[,] grid;
     Dictionary<Vector2, Vector2> wall_chain;
 
     public void GenerateRoom() {
         grid = new string[,] {
-            {"#","#","#","#"},
-            {"#",".",".","#"},
-            {"#",".",".","#"},
-            {"#","#","#","#"}
+            {"#","#","#","#","#"},
+            {"#",".",".",".","#"},
+            {"#",".","#",".","#"},
+            {"#",".",".",".","#"},
+            {"#","#","#","#","#"}
+
         };
         wall_chain = new Dictionary<Vector2, Vector2>();
-        FindWallVerticies();
+
+        GenerateWalls();
     }
 
     private void OnValidate() {
 
     }
 
-    public void FindWallVerticies() {
+    public List<Mesh> GenerateWalls() { //finds individual wall 'chains' then generates all of the meshes
+        List<Mesh> meshes = new List<Mesh>();
+
+        FindWallVerticies();
+
+        while (wall_chain.Count > 0) {
+            List<Vector3> verticies = CollectWallChain();
+            meshes.Add(WallMesh.GenerateWallMesh(verticies, 10));
+        }
+
+        return meshes;
+    }
+    private void FindWallVerticies() {
         Vector2[] directs = new Vector2[]{Vector2.right,Vector2.up,Vector2.left,Vector2.down};
         
         for (int y = 0; y < this.grid.GetLength(1); y++) {
             for (int x = 0; x < this.grid.GetLength(0); x++) {
 
                 string val = this.grid[y,x];
-                Debug.Log(val);
+                //Debug.Log(val);
                 //find walls
                 if (val == ".") { //if there is an empty space
                     foreach (Vector2 d in directs) { //check in every direction
@@ -66,31 +81,28 @@ public class RoomLayout : MonoBehaviour {
 
     }
 
-    public void FindWalls() { //finds individual wall 'chains' and returns them in clockwise order
-        Vector2 curVertex = GetFirstKey();
-        HashSet<Vector2> visited = new HashSet<Vector2>();
-        List<Vector2> wall = new List<Vector2>();
 
-        while (wall_chain.Count > 0) {
+
+    private List<Vector3> CollectWallChain() {
+
+        Vector3 curVertex = GetFirstKey();
+        List<Vector3> visited = new List<Vector3>();
+        while(true) {
+
+            if (visited.Contains(curVertex)) {
+
+                return visited;
+            }
+
             if (!wall_chain.ContainsKey(curVertex)) {
-                Debug.LogError("Unable to locate next vertex");
+                Debug.LogError("Incomplete wall chain");
+                return null;
             }
+
             visited.Add(curVertex);
-            Vector2 nextVertex = wall_chain[curVertex];
+            Vector3 nextVertex = wall_chain[curVertex];
             wall_chain.Remove(curVertex);
-
-            if (visited.Contains(nextVertex)) { //formed a close loop
-                //TODO: track all verticies we have visited, and bundle them up in an array or sm
-
-                //Generate wall mesh here
-
-                wall.Clear();
-
-            }
-            
-
             curVertex = nextVertex;
-
         }
     }
 
@@ -99,9 +111,7 @@ public class RoomLayout : MonoBehaviour {
             Debug.LogError($"Start wall vertex already exists: ({start.x},{start.y}) to ({end.x},{end.y})");
             return;
         }
-        //Assert.IsTrue(start != end,"Starting vertex is the same as ending vertex");
-        Debug.Log($"Adding: ({start.x},{start.y}) to ({end.x},{end.y})");
-        this.wall_chain.Add(start,end);
+        wall_chain.Add(start,end);
     }
 
     private Vector2 GetFirstKey() {//get any key from dict as starting point
